@@ -1,0 +1,19 @@
+{
+  "name": "bridge-analytics-api",
+  "version": "1.0.0",
+  "description": "Bridge Analytics — Backend API pour l'analyse de performance académique",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "keywords": ["analytics", "academic", "bridge"],
+  "author": "Bridge Team",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "uuid": "^10.0.0"
+  }
+}
