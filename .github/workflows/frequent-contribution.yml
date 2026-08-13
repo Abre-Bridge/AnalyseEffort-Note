@@ -1,0 +1,53 @@
+name: Repository Maintenance
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repository-maintenance
+  cancel-in-progress: false
+
+on:
+  schedule:
+    # 10 maintenance windows per day
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update maintenance log
+        run: |
+          DATE=$(date -u +"%Y-%m-%d")
+          TIME=$(date -u +"%H:%M UTC")
+
+          mkdir -p logs
+
+          echo "- **$DATE ($TIME)** — Repository maintenance check." >> logs/maintenance.md
+
+      - name: Configure Git
+        run: |
+          git config user.name "Abre-Bridge"
+          git config user.email "abrebridge2628@gmail.com"
+
+      - name: Commit changes
+        run: |
+          git add -f logs/maintenance.md
+
+          if git diff --cached --quiet; then
+            echo "No changes detected."
+            exit 0
+          fi
+
+          git commit -m "chore: repository maintenance"
+
+      - name: Push changes
+        run: |
+          git push origin HEAD:main
